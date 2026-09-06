@@ -37,7 +37,7 @@
                 
                 <!-- Panel Input Parameter AI -->
                 <div class="xl:col-span-4 bg-white p-6 rounded-xl shadow-sm border border-slate-200 h-fit">
-                    <h2 class="font-bold text-md text-slate-700 border-b border-slate-100 pb-2 mb-4"><i class="fas fa-robot text-blue-500 mr-2"></i>Parameter Instruksi AI</h2>
+                    <h2 class="font-bold text-md text-slate-700 border-b border-slate-100 pb-2 mb-4"><i class="fas fa-robot text-blue-500 mr-2"></i>Parameter Instruksi</h2>
                     <div class="space-y-4">
                         <div>
                             <label class="block text-xs font-bold text-slate-600 mb-1">Topik Spesifik Pembelajaran</label>
@@ -62,7 +62,7 @@
                             </select>
                         </div>
                         <button id="btn-generate" class="w-full mt-4 bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg text-sm font-bold shadow-md transition-colors flex items-center justify-center gap-2">
-                            <i class="fas fa-magic"></i> Generate Modul dengan AI
+                            <i class="fas fa-magic"></i> Generate Modul Cerdas
                         </button>
                     </div>
                 </div>
@@ -94,55 +94,114 @@
         const inputWaktu = document.getElementById('input-waktu');
         const inputMetode = document.getElementById('input-metode');
 
-        btnGenerate.addEventListener('click', async () => {
-            const topik = inputTopik.value;
-            const waktu = inputWaktu.value;
+        btnGenerate.addEventListener('click', () => {
+            const topik = inputTopik.value || "Pembelajaran Umum";
+            const waktu = inputWaktu.value || "2 JP";
             const metode = inputMetode.value;
 
-            if(!topik || !waktu) {
-                alert("Harap isi Topik Pembelajaran dan Alokasi Waktu terlebih dahulu!");
-                return;
-            }
+            outputCanvas.innerHTML = '<div class="flex flex-col items-center justify-center h-full text-blue-600"><i class="fas fa-spinner fa-spin text-4xl mb-4"></i><p class="text-sm font-bold">Menyusun Modul Ajar Kurikulum Merdeka...</p></div>';
 
-            const API_KEY = prompt("Tempelkan API Key Anda di sini:");
-            
-            if (!API_KEY) {
-                alert("Proses dibatalkan.");
-                return;
-            }
+            setTimeout(() => {
+                const htmlTemplate = `
+                    <div style="font-family: Arial, sans-serif; line-height: 1.5; color: #333;">
+                        <div style="text-align: center; border-bottom: 3px double #333; padding-bottom: 10px; margin-bottom: 20px;">
+                            <h2 style="margin: 0; font-size: 16px; text-transform: uppercase;">PEMERINTAH KABUPATEN BOMBANA</h2>
+                            <h3 style="margin: 5px 0; font-size: 14px;">DINAS PENDIDIKAN DAN KEBUDAYAAN</h3>
+                            <h1 style="margin: 0; font-size: 18px; font-weight: bold;">SD-SMP SATAP N15 POLEANG BARAT</h1>
+                            <p style="margin: 3px 0; font-size: 11px;">Desa Babamolingku, Kecamatan Poleang Barat</p>
+                        </div>
 
-            outputCanvas.innerHTML = '<div class="flex flex-col items-center justify-center h-full text-blue-600"><i class="fas fa-spinner fa-spin text-4xl mb-4"></i><p class="text-sm font-bold">AI sedang menyusun Modul Ajar...</p></div>';
+                        <h2 style="text-align: center; font-size: 15px; margin-bottom: 20px; text-decoration: underline;">MODUL AJAR KURIKULUM MERDEKA</h2>
+                        
+                        <table style="width: 100%; font-size: 13px; margin-bottom: 20px; border-collapse: collapse;">
+                            <tr>
+                                <td style="width: 25%; font-weight: bold; padding: 4px;">Mata Pelajaran</td>
+                                <td style="width: 2%;">:</td>
+                                <td style="width: 73%;">Ilmu Pengetahuan Alam (IPA)</td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: bold; padding: 4px;">Topik Materi</td>
+                                <td style="text-align: center;">:</td>
+                                <td style="font-weight: bold; color: #1d4ed8;">${topik}</td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: bold; padding: 4px;">Fase / Kelas</td>
+                                <td style="text-align: center;">:</td>
+                                <td style="color: #333;">Fase D - Kelas 7 / Semester Ganjil</td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: bold; padding: 4px;">Alokasi Waktu</td>
+                                <td style="text-align: center;">:</td>
+                                <td style="color: #333;">${waktu} (Pertemuan Tatap Muka)</td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: bold; padding: 4px;">Metodologi</td>
+                                <td style="text-align: center;">:</td>
+                                <td style="color: #333;">${metode}</td>
+                            </tr>
+                        </table>
 
-            const promptText = `Anda adalah Asisten Pendidik Ahli pembuat Modul Ajar Kurikulum Merdeka. Buat dokumen modul ajar lengkap. Topik: ${topik}. Waktu: ${waktu}. Metodologi: ${metode}. Format hasil mutlak HANYA menggunakan tag HTML dasar (<h1>, <h2>, <p>, <ul>, <table>) agar rapi saat dicetak. JANGAN gunakan markdown (\`\`\`). Pastikan memuat: 1) Kop Identitas (SD-SMP SATAP N15 Poleang Barat), 2) Capaian & Tujuan, 3) 8 Dimensi Profil Lulusan & 7 Kebiasaan Anak Hebat, 4) Skenario Kegiatan (Pendahuluan, Inti, Penutup), 5) Asesmen (Formatif/Sumatif), dan 6) Blok Pengesahan di paling bawah (Mengetahui Kepala Sekolah Lukman, S.Pd. & Guru Mapel Faisal A., S.Pd.,Gr.).`;
+                        <h3 style="background: #e2e8f0; padding: 6px; font-size: 13px; border-left: 4px solid #2563eb;">A. Tujuan Pembelajaran</h3>
+                        <ul style="font-size: 13px; padding-left: 20px;">
+                            <li>Peserta didik mampu memahami konsep dasar serta menganalisis fenomena terkait <b>${topik}</b> secara kritis.</li>
+                            <li>Peserta didik mampu menyajikan laporan hasil pengamatan sederhana dengan kolaborasi kelompok.</li>
+                        </ul>
 
-            try {
-                // Endpoint otomatis mendeteksi apakah menggunakan kunci GCP (AQ.) atau AI Studio standar (AIzaSy.)
-                let endpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`;
-                if (API_KEY.startsWith('AQ.')) {
-                    endpoint = `https://aiplatform.googleapis.com/v1beta/publishers/google/models/gemini-1.5-flash:generateContent?key=${API_KEY}`;
-                }
+                        <h3 style="background: #e2e8f0; padding: 6px; font-size: 13px; border-left: 4px solid #2563eb;">B. Profil Pelajar Pancasila & 7 Kebiasaan Anak Hebat</h3>
+                        <ul style="font-size: 13px; padding-left: 20px;">
+                            <li>Beriman, bertakwa kepada Tuhan YME, dan berakhlak mulia.</li>
+                            <li>Bernalar kritis dan mandiri melalui eksplorasi materi ${topik}.</li>
+                            <li>Penerapan kebiasaan disiplin, kerja sama, dan tanggung jawab belajar.</li>
+                        </ul>
 
-                const response = await fetch(endpoint, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        contents: [{ parts: [{ text: promptText }] }]
-                    })
-                });
-                
-                const data = await response.json();
-                
-                if(data.error) {
-                    throw new Error(data.error.message);
-                }
+                        <h3 style="background: #e2e8f0; padding: 6px; font-size: 13px; border-left: 4px solid #2563eb;">C. Skenario Kegiatan Pembelajaran</h3>
+                        <table style="width: 100%; border-collapse: collapse; font-size: 12px; margin-top: 10px;" border="1">
+                            <thead>
+                                <tr style="background: #f8fafc;">
+                                    <th style="padding: 6px; width: 20%;">Tahapan</th>
+                                    <th style="padding: 6px; width: 65%;">Deskripsi Kegiatan (${metode})</th>
+                                    <th style="padding: 6px; width: 15%;">Waktu</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td style="padding: 6px; font-weight: bold;">Pendahuluan</td>
+                                    <td style="padding: 6px;">Guru membuka kelas dengan salam, apersepsi kesiapan belajar (mindful), dan menyampaikan tujuan materi ${topik}.</td>
+                                    <td style="padding: 6px; text-align: center;">15 Menit</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 6px; font-weight: bold;">Kegiatan Inti</td>
+                                    <td style="padding: 6px;">Siswa dibagi ke dalam kelompok untuk mengkaji materi, melakukan diskusi interaktif, serta menyusun hasil kerja (meaningful & joyful).</td>
+                                    <td style="padding: 6px; text-align: center;">60 Menit</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 6px; font-weight: bold;">Penutup</td>
+                                    <td style="padding: 6px;">Refleksi pembelajaran bersama, penarikan kesimpulan materi ${topik}, dan doa penutup.</td>
+                                    <td style="padding: 6px; text-align: center;">15 Menit</td>
+                                </tr>
+                            </tbody>
+                        </table>
 
-                const resultText = data.candidates[0].content.parts[0].text;
-                let cleanHTML = resultText.replace(/```html/g, '').replace(/```/g, '');
-                outputCanvas.innerHTML = cleanHTML;
-                
-            } catch (error) {
-                outputCanvas.innerHTML = `<div class="p-6 text-red-600 font-bold border-2 border-red-300 rounded bg-red-50"><i class="fas fa-exclamation-triangle mr-2"></i>Terjadi kesalahan: ${error.message}</div>`;
-            }
+                        <h3 style="background: #e2e8f0; padding: 6px; font-size: 13px; border-left: 4px solid #2563eb; margin-top: 20px;">D. Asesmen Pembelajaran</h3>
+                        <p style="font-size: 13px;"><b>Asesmen Formatif:</b> Observasi keaktifan diskusi kelompok dan lembar kerja peserta didik.</p>
+                        <p style="font-size: 13px;"><b>Asesmen Sumatif:</b> Tes tertulis akhir topik pemahaman.</p>
+
+                        <div style="margin-top: 40px; display: flex; justify-content: space-between; font-size: 13px; text-align: center;">
+                            <div style="width: 40%;">
+                                <p>Mengetahui,<br>Kepala Sekolah</p>
+                                <br><br><br>
+                                <p><b><u>Lukman, S.Pd.</u></b><br>NIP. 19700101XXXXXXXXXX</p>
+                            </div>
+                            <div style="width: 40%;">
+                                <p>Babamolingku, ${new Date().toLocaleDateString('id-ID', {day: 'numeric', month: 'long', year: 'numeric'})}<br>Guru Mata Pelajaran IPA</p>
+                                <br><br><br>
+                                <p><b><u>Faisal A., S.Pd., Gr.</u></b><br>NIP. 19910517XXXXXXXXXX</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                outputCanvas.innerHTML = htmlTemplate;
+            }, 800);
         });
     </script>
 </body>
