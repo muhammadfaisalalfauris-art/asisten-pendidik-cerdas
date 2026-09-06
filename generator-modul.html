@@ -87,19 +87,6 @@
         </div>
     </main>
 
-    <!-- Skrip Mesin AI Gemini -->
-    <script>
-        const btnGenerate = document.getElementById('btn-generate');
-        const outputCanvas = document.getElementById('output-canvas');
-        const inputTopik = document.getElementById('input-topik');
-        const inputWaktu = document.getElementById('input-waktu');
-        const inputMetode = document.getElementById('input-metode');
-
-        // PENTING: GANTI TEKS DI BAWAH INI DENGAN API KEY GOOGLE STUDIO ANDA NANTI
-        const API_KEY = 'MASUKKAN_API_KEY_GEMINI_ANDA_DI_SINI';
-
-        btnGenerate.addEventListener('click', async () => {
-<!-- Skrip Mesin AI Gemini (Versi Aman) -->
     <script>
         const btnGenerate = document.getElementById('btn-generate');
         const outputCanvas = document.getElementById('output-canvas');
@@ -117,15 +104,14 @@
                 return;
             }
 
-            // Meminta API Key secara aman melalui pop-up lokal (tidak tersimpan di server)
-            const API_KEY = prompt("Untuk keamanan, masukkan Kunci API Gemini Anda di sini:");
+            const API_KEY = prompt("Untuk keamanan sistem, silakan tempelkan (paste) API Key Gemini Anda di sini:");
             
             if (!API_KEY) {
-                alert("Pembuatan modul dibatalkan karena Kunci API kosong.");
+                alert("Proses dibatalkan. API Key diperlukan untuk menjalankan AI.");
                 return;
             }
 
-            outputCanvas.innerHTML = '<div class="flex flex-col items-center justify-center h-full text-blue-600"><i class="fas fa-spinner fa-spin text-4xl mb-4"></i><p class="text-sm font-bold">AI sedang menyusun dan memformat Modul Ajar...</p></div>';
+            outputCanvas.innerHTML = '<div class="flex flex-col items-center justify-center h-full text-blue-600"><i class="fas fa-spinner fa-spin text-4xl mb-4"></i><p class="text-sm font-bold">AI sedang menyusun Modul Ajar. Mohon tunggu sekitar 10-15 detik...</p></div>';
 
             const promptText = `Anda adalah Asisten Pendidik Ahli pembuat Modul Ajar Kurikulum Merdeka. Buat dokumen modul ajar lengkap. Topik: ${topik}. Waktu: ${waktu}. Metodologi: ${metode}. Format hasil mutlak HANYA menggunakan tag HTML dasar (<h1>, <h2>, <p>, <ul>, <table>) agar rapi saat dicetak. JANGAN gunakan markdown (\`\`\`). Pastikan memuat: 1) Kop Identitas (SD-SMP SATAP N15 Poleang Barat), 2) Capaian & Tujuan, 3) 8 Dimensi Profil Lulusan & 7 Kebiasaan Anak Hebat, 4) Skenario Kegiatan (Pendahuluan, Inti, Penutup), 5) Asesmen (Formatif/Sumatif), dan 6) Blok Pengesahan di paling bawah (Mengetahui Kepala Sekolah Lukman, S.Pd. & Guru Mapel Faisal A., S.Pd.,Gr.).`;
 
@@ -139,13 +125,19 @@
                 });
                 
                 const data = await response.json();
-                const resultText = data.candidates[0].content.parts[0].text;
                 
+                if(data.error) {
+                    throw new Error(data.error.message);
+                }
+
+                const resultText = data.candidates[0].content.parts[0].text;
                 let cleanHTML = resultText.replace(/```html/g, '').replace(/```/g, '');
                 outputCanvas.innerHTML = cleanHTML;
                 
             } catch (error) {
-                outputCanvas.innerHTML = `<div class="p-6 text-red-600 font-bold border-2 border-red-300 rounded bg-red-50"><i class="fas fa-exclamation-triangle mr-2"></i>Terjadi kesalahan sistem: Pastikan API Key valid atau cek koneksi internet. Detail: ${error.message}</div>`;
+                outputCanvas.innerHTML = `<div class="p-6 text-red-600 font-bold border-2 border-red-300 rounded bg-red-50"><i class="fas fa-exclamation-triangle mr-2"></i>Terjadi kesalahan: ${error.message}. Pastikan API Key yang Anda masukkan benar.</div>`;
             }
         });
     </script>
+</body>
+</html>
